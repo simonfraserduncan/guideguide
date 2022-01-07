@@ -1,73 +1,77 @@
-import "./App.css";
-import { Canvas } from "@react-three/fiber";
-import { Stars, OrbitControls } from "@react-three/drei";
-import "@picocss/pico/css/pico.min.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import {
+  Box,
+  CssBaseline,
+  Container,
+  TextField,
+  Button,
+  Paper,
+} from "@mui/material";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { getUser, createUser, updateUser } from "./api";
 
 function App() {
-  const [name, setName] = useState("");
-  const [role, setRole] = useState("");
-  const [location, setLocation] = useState("");
+  const [user, setUser] = useState();
 
-  const onSave = () => {
-    console.log();
+  const darkTheme = createTheme({
+    palette: {
+      mode: "dark",
+    },
+  });
+
+  useEffect(async () => {
+    setUser(await getUser());
+  }, [setUser]);
+
+  const onSave = async () => {
+    if (!user) {
+      await createUser(user);
+    } else {
+      await updateUser(user);
+    }
   };
 
   return (
-    <>
-      <header className="container">
-        <span style={{ fontSize: 100 }}>🍕</span>
-        <div className="data">
-          <h1>Heya, I'm {name}</h1>
-          <span>{role}</span>
-          <span>{location}</span>
-        </div>
-      </header>
-      <main className="container">
-        <div className="grid">
-          <label htmlFor="name">
-            Name
-            <input
-              type="text"
-              id="name"
-              placeholder="Name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-          </label>
-          <label htmlFor="role">
-            Role
-            <input
-              type="text"
-              id="role"
-              placeholder="Role"
-              value={role}
-              onChange={(e) => setRole(e.target.value)}
-            />
-          </label>
-          <label htmlFor="location">
-            Location
-            <input
-              type="text"
-              id="location"
-              placeholder="Location"
-              value={location}
-              onChange={(e) => setLocation(e.target.value)}
-            />
-          </label>
-        </div>
-        <button onClick={() => onSave()}>Save</button>
-      </main>
-      <Canvas style={{ position: "fixed", top: 0, zIndex: -1 }}>
-        <OrbitControls
-          autoRotate
-          autoRotateSpeed={0.5}
-          enablePan={false}
-          enableRotate={false}
-        />
-        <Stars />
-      </Canvas>
-    </>
+    <ThemeProvider theme={darkTheme}>
+      <Container component="main">
+        <CssBaseline />
+        {user && (
+          <Box sx={{ display: "flex", flexDirection: "column", mb: 2 }}>
+            <span style={{ fontSize: 100 }}>🍕</span>
+            <h2>Heya, I'm {user.name}</h2>
+            <span>My role is: {user.role}</span>
+            <span>I am located here: {user.location}</span>
+          </Box>
+        )}
+        <Paper
+          elevation={2}
+          sx={{
+            p: 3,
+            display: "grid",
+            gridGap: 20,
+          }}
+        >
+          <TextField
+            label="Name"
+            onChange={(e) => setUser({ ...user, name: e.target.value })}
+          />
+
+          <TextField
+            label="Role"
+            onChange={(e) => setUser({ ...user, role: e.target.value })}
+          />
+
+          <TextField
+            label="Location"
+            onChange={(e) => setUser({ ...user, location: e.target.value })}
+          />
+
+          <Button variant="contained" size="large" fullWidth onClick={onSave}>
+            Save
+          </Button>
+        </Paper>
+      </Container>
+    </ThemeProvider>
   );
 }
 
