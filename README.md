@@ -9,5 +9,6 @@ This is an example React user guide application using a [DataStax Astra](https:/
 4) Once you clone this code locally you need to copy the `.env.example` file to a file named `.env` and fill the required values in from your Application Token and [Astra DB connection settings](https://github.com/DataStax-Examples/sample-app-template/blob/master/GETTING_STARTED.md#get-your-astra-db-connection-settings).
 6) Start the example by running `netflify dev` in your local console.
 
-## How this works
-Once the Astra DB credentials are provided, the necessary tables are created in the database. The webservice will be available on port 8888 once the application has been deployed.
+
+## How this repo works
+Once the Astra DB credentials are provided, the necessary tables are created in the database. The webservice will be available on port 8888 once the application has been deploye
