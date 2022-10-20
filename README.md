@@ -11,3 +11,4 @@ This is an example React user guide application using a [DataStax Astra](https:/
 
 ## How this works
 Once the Astra DB credentials are provided, the necessary tables are created in the database. The webservice will be available on port 8888 once the application has been deployed.
+Once the Astra DB credentials are provided, the necessary tables are created in the database. The webservice will be available on port 8888 once the application has been deployed.
